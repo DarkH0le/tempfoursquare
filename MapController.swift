@@ -15,9 +15,6 @@ class MapController: UIViewController {
         super.viewDidLoad()
         
         logout()
-        
-        
-        
         //Themes 4,5
         
         var user = User(name: "Juan Cabral", image: "penguin.png")
@@ -45,7 +42,14 @@ class MapController: UIViewController {
         view = mapView
         
         //Inserting marker in map
-        printMarkersInMap(mapView)
+        do {
+            try printMarkersInMap(mapView)
+        } catch errors.ErrorGettingPoins {
+            print("Some Error")
+        } catch {
+            print("More Errors :D!")
+        }
+        
         
         
          //Creates a marker in the center of the map.
@@ -93,16 +97,16 @@ class MapController: UIViewController {
         return currentPosition
     }
     
-    func printMarkersInMap(_ mapa:GMSMapView) -> Void {
+    func printMarkersInMap(_ mapa:GMSMapView) throws -> Void {
         
         var newPlaceController = PlaceController()
         let listOfPlaces = newPlaceController.dataBasePlaces()
         let currPositionNow = getCurrentPosition()
-        var finalListOfPlaces = newPlaceController.getPoints(listOfPlaces, currPositionNow, (5/10))
+        var finalListOfPlaces = try newPlaceController.getPoints(listOfPlaces, currPositionNow, (5/10))
         
         
         //Pinting markets
-        for (index , marker) in (finalListOfPlaces.enumerated()) {
+        for (index , marker) in (finalListOfPlaces?.enumerated())! {
             var xValue = marker.placeXPoint!
             var yValue = marker.placeYPoint!
             var typeInstance = marker.instanceType!
@@ -117,7 +121,9 @@ class MapController: UIViewController {
         print(finalListOfPlaces)
     }
     
-    
+    enum errors:Error {
+        case ErrorGettingPoins
+    }
     
 }
 

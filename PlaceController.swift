@@ -8,6 +8,12 @@
 import Foundation
 import UIKit
 
+private let Q1:String = "NORTH"
+private let Q2:String = "SOUTH"
+private let Q3:String = "EAST"
+private let Q4:String = "WEST"
+private let NEXTYOU:String = "NEXT TO YOU, THE PLACE IS WHERE YOU´RE!"
+
 class PlaceController {
     
     struct Point<T>{
@@ -53,7 +59,7 @@ class PlaceController {
         }
     }
     
-    func getPoints(_ listOfPoints:[Point<String>],_ currPosition:Point<String>,_  radio:Double) throws -> [Point<String>] {
+    func getPoints(_ listOfPoints:[Point<String>],_ currPosition:Point<String>,_  radio:Double) throws -> [Point<String>]? {
         
         //List of return, this whitin the points inside of the radio
         var finalList = [Point<String>]()
@@ -65,18 +71,29 @@ class PlaceController {
             var soFarAway:Double? = listOfPoints[index][currPosition.placeXPoint, currPosition.placeYPoint]
             
             //Check for a validate distance
-            guard let finalDistance = soFarAway else { throw errors.ErrorGettingPoins }
+            guard let finalDistance = soFarAway else {throw errors.ErrorGettingPoins}
             
             //Inserting the place to the final list if is inside of the radio
             if((finalDistance * 100)  < radio){
-                 print("""
-                \(finalDistance * 100) y el radio es
-                    \(radio)
-""")
                 finalList.append(point)
             }
         }
         return finalList
+    }
+    
+    //Cardinality
+    func cardinalityOfPoint(xPoint:Double, yPoint:Double, currXPoint:Double, currYPoint:Double) -> String {
+        
+        if (xPoint >= currXPoint) && (yPoint >= currYPoint)  {
+            return Q1
+        } else if (xPoint <= currXPoint) && (yPoint <= currYPoint) {
+            return Q2
+        } else if (xPoint >= currXPoint) && (yPoint <= currYPoint) {
+            return Q3
+        } else if (xPoint <= currXPoint) && (yPoint <= currYPoint) {
+            return Q4
+        }
+        return NEXTYOU
     }
     
     func dataBasePlaces() -> [Point<String>] {
