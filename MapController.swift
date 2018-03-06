@@ -17,8 +17,8 @@ class MapController: UIViewController {
         logout()
         //Themes 4,5
         
-        var user = User(name: "Juan Cabral", image: "penguin.png")
-        var post = Post(text: "Swift ", imageUrl: "post_image.png", user: user)
+        let user = User(name: "Juan Cabral", image: "penguin.png")
+        let post = Post(text: "Swift ", imageUrl: "post_image.png", user: user)
         
         post.incrementComments()
         post.incrementComments()
@@ -86,39 +86,42 @@ class MapController: UIViewController {
     //userposition -> render in the map if and only if there's no exception
     
     func logout() {
-        var loginController: LoginController = LoginController()
+        let loginController: LoginController = LoginController()
         present(loginController, animated: true, completion: nil)
     }
     func getCurrentPosition() -> PlaceController.Point<String> {
         
         //FAKE GPS LOCATION
         //TODO: Implement throught phone sensor
-        var currentPosition = PlaceController.Point<String>(20.7379825, -103.3719118, "Current Position")
+        let currentPosition = PlaceController.Point<String>(20.7379825, -103.3719118, "Current Position")
         return currentPosition
     }
     
     func printMarkersInMap(_ mapa:GMSMapView) throws -> Void {
         
-        var newPlaceController = PlaceController()
+        let newPlaceController = PlaceController()
         let listOfPlaces = newPlaceController.dataBasePlaces()
         let currPositionNow = getCurrentPosition()
-        var finalListOfPlaces = try newPlaceController.getPoints(listOfPlaces, currPositionNow, (5/10))
+        let finalListOfPlaces = try newPlaceController.getPoints(listOfPlaces, currPositionNow, (5/10))
         
         
         //Pinting markets
         for (index , marker) in (finalListOfPlaces?.enumerated())! {
-            var xValue = marker.placeXPoint!
-            var yValue = marker.placeYPoint!
-            var typeInstance = marker.instanceType!
-            var marker = GMSMarker()
+            let xValue = marker.placeXPoint!
+            let yValue = marker.placeYPoint!
+            let typeInstance = marker.instanceType!
+            let marker = GMSMarker()
             
             marker.position = CLLocationCoordinate2D(latitude: xValue, longitude: yValue)
             marker.title = typeInstance
             marker.snippet = "Mexico"
             marker.map = mapa
+            marker.icon = GMSMarker.markerImage(with: .black)
+            marker.snippet = "DA WAE"
+            
             
         }
-        print(finalListOfPlaces)
+        print(finalListOfPlaces!)
     }
     
     enum errors:Error {

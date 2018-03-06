@@ -42,18 +42,8 @@ class PlaceController {
                 }
                 
                 //Getting distance between place and current position
-                var distance = sqrt((pow((myXPosition - xPlace), 2) + pow(myYPosition - yPlace, 2)))
+                let distance = sqrt((pow((myXPosition - xPlace), 2) + pow(myYPosition - yPlace, 2)))
                 
-                print("""
-                    
-                    
-                    \(myXPosition) y el radio es \(xPlace)
-                    \(myYPosition)  y luego \(yPlace)
-                    
-                    
-                    
-                    
-                    """)
                 return distance
             }
         }
@@ -68,7 +58,7 @@ class PlaceController {
         for (index, point) in listOfPoints.enumerated() {
             
             //Get distrance thought subscript
-            var soFarAway:Double? = listOfPoints[index][currPosition.placeXPoint, currPosition.placeYPoint]
+            let soFarAway:Double? = listOfPoints[index][currPosition.placeXPoint, currPosition.placeYPoint]
             
             //Check for a validate distance
             guard let finalDistance = soFarAway else {throw errors.ErrorGettingPoins}
